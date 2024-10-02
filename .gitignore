@@ -51,5 +51,6 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-debug/
+# Add additional list
+Debug/
 .vs/
