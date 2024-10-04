@@ -122,7 +122,7 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.c">
+    <Compile Include="flash_main.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
