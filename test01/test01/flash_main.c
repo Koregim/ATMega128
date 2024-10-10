@@ -24,10 +24,13 @@ int check(void)
 			_delay_ms(5);
 			last_sta = 1;
 			count = 1;
+			//count++;
 			//if(count == 2)
 			//{
 				//count = 0;
 			//}
+			del_val1 = 250;
+			del_val2 = 250;
 			last_but = 1;
 			return 1;
 		}
@@ -61,20 +64,11 @@ int check(void)
 	}
 	else
 	{
+		_delay_ms(5);
 		last_sta = cur_sta;
 		cur_sta = 0;
 	}
 	return last_but;
-	//else
-	//{
-		//curBut = 0;
-		//lastBut = curBut;
-	//}
-	//else
-	//{
-		//curBut = 0;
-		//_delay_ms(10);
-	//}
 }
 
 int main(void)
@@ -82,7 +76,7 @@ int main(void)
 	
     /* Replace with your application code */
 	DDRG |= 0x10;		 // == DDG3 = 1 bit에 직접 접근, const(상수)
-	DDRG &= ~0x07;
+	DDRG &= ~0x07;		// G0,G1,G2 포트 선언 (0x01+0x02+0x04) == 0001, 0010, 0100
 
 
 	//while(1)			//waiting 버튼이 눌리면 아래 while 시작
@@ -95,7 +89,7 @@ int main(void)
 	
     while (1) 
     {
-		//if(count == 0)
+		//if(count == -1)
 			//PORTG &= ~0x10;
 		if(check() == 1 && count == 1)
 		{
