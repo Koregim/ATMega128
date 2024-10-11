@@ -18,35 +18,19 @@
 #define SW3 PORTD1				// 인터럽트 핀에 할당
 
 #define SW1 PORTG4				// 스탠바이 스위치
-volatile int ival = 200;
+volatile int ival = 400;		// interrupt를 위한 변수 설정법
 ISR(INT0_vect)					// slower
 {
 	ival += 500;
 }
 ISR(INT1_vect)					// faster
 {
-	ival -= 50;
+	ival -= 80;
 	if(ival < 10)
 		ival = 20;
 }
-void standBy()					// PG4 pin으로 프로그램 시작 스위치 연결
-{
-	DDRG &= ~0x10;				// G Port 5 Bit : 입력
-		
-	//PORTG |= 0x10;				// (== PORTG = _BV(LED1) == (1<<LED1);  시작되면 LED ON) 
-	// ==> PORTG4가 LED에서 프로그램 스위치로 변경
-	PORTG |= 0x10;				// PG4 : Pull-up 설정
-	
-	
-	
-	// PORT의 값은 N/A이므로 초기값을 검증 한 후 들어가는 것이 좋음
-	while((PING & 0x10) == 0);					// PING0의 초기값이 1(open)임을 가정
-	
-	while(1)
-	{
-		if((PING & 0x10) == 0)	break;			// 버튼이 눌려지지 않은 상태 = 1
-	}
-}
+
+
 int main(void)
 {
 	
@@ -59,9 +43,14 @@ int main(void)
 	standBy();
 	PORTG &= ~_BV(LED1);
 	// Mask Register
-	EIMSK = 03;
+	EIMSK |= 0x03;				// INT0, INT1 활성화를위해 0000 0011 ==> 기존 인터럽트 값 유지를 위해 |=로 xxxx xx11
 	// Create register
-	EICRA = 0x0A;
+	//EICRA |= 0x0f;				// INT0과 INT1의 interrupt timing을 rising edge로 설정하기 위해 xxxx 1111로 설정
+								// falling edge로 설정하기 위해 EICRA |= 0x0A로 설정한다면 xxxx 1x1x가 되어버림
+	//EICRA |= 0x0a;	// xxxx 1x1x
+	//EICRA &= ~0x05;	// xxxx x0x0 추가
+	//==> 한줄로
+	EICRA = (EICRA & 0xf0) | 0x0a;
 	
 	sei();
     while (1) 
