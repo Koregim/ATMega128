@@ -239,16 +239,18 @@ int main(void)
 	
 	while(1)
 	{
-		if(clock_st == 1 && timer_st == 0)
+		if(clock_st == 1 && state != 1)
 		{
 			PORTG |= 0x01;
-			PORTG &= ~0x03;
+			PORTG &= ~0x02;
 			//
 		}
-		else if(timer_st > 0)
+		else if(timer_st == 1 && state != 1)
 		{
-			PORTG |= 0x03;
+			PORTG |= 0x02;
+			PORTG &= ~0x01;
 		}
+		else PORTG &= ~0x03;
 	}
 	
 	
