@@ -4,7 +4,7 @@
  * Created: 2024-10-23 오전 9:46:10
  * Author : user
  */ 
-#define		F_CPU	16000000UL
+#define		F_CPU	16000000L
 #include <avr/io.h>
 #define __DELAY_BACKWARD_COMPATIBLE__
 #include <avr/delay.h>
